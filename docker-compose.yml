@@ -1,0 +1,30 @@
+#Christopher Garbutt
+version: '3'
+services:
+    flaskapp:
+       # build: ./flaskapp
+        image: garbca1/flaskapp
+        networks:
+            - app
+        command: python myproject.py
+        deploy:
+            replicas: 3
+    nginx:
+       # build: ./nginx
+        image: garbca1/proxy
+        ports:
+            - 8080:80
+        networks:
+            - app
+        depends_on:
+            - flaskapp
+        deploy:
+            replicas: 3
+    redis:
+        image: redis
+        networks:
+            - app
+        deploy:
+            replicas: 3
+networks:
+    app:  
